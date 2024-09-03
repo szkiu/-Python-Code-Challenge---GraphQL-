@@ -1,5 +1,6 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends, Form
 from fastapi.security import OAuth2PasswordBearer
+from pydantic import BaseModel
 import jwt
 
 SECRET_KEY = "your_secret_key"
@@ -7,11 +8,35 @@ SECRET_KEY = "your_secret_key"
 auth_router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-clients = {"client_id": "client_secret"}
+clients = {"test_client_id": "test_client_secret"}
 
 
-@auth_router.post("/token")
-async def token(client_id: str, client_secret: str):
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+def verify_token(token: str = Depends(oauth2_scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
+        user_id: str = payload.get("sub")
+        if user_id is None:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid token",
+                headers={"WWW-Authenticate": "Bearer"},
+            )
+        return user_id
+    except jwt.PyJWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid token",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+
+@auth_router.post("/token", response_model=Token)
+async def token(client_id: str = Form(...), client_secret: str = Form(...)):
     if clients.get(client_id) != client_secret:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,

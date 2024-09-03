@@ -4,3 +4,4 @@ ariadne==0.16.0
 pandas==1.5.3
 PyJWT==2.8.0
 numpy==1.23.5
+python-multipart==0.0.9
