@@ -1,0 +1,6 @@
+fastapi==0.78.0
+uvicorn==0.22.0
+ariadne==0.16.0
+pandas==1.5.3
+PyJWT==2.8.0
+numpy==1.23.5
