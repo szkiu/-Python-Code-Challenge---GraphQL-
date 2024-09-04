@@ -12,7 +12,14 @@ Este proyecto implementa una API utilizando FastAPI con un endpoint GraphQL, doc
 ## Requisitos
 
 - Docker
-- Docker Compose (opcional)
+
+### Descarga del Archivo CSV
+
+El archivo CSV necesario para el funcionamiento de la API se puede descargar desde el siguiente enlace:
+
+[Data_example - Python Coding Challenge - GraphQL.csv](https://drive.google.com/file/d/1Vlk3mk41K3zoHCLP9wOeCQIhD_y7ugqf/view?usp=sharing)
+
+Por favor, descarga el archivo y colócalo en la carpeta `data/` antes de ejecutar la aplicación.
 
 ## Instalación
 
