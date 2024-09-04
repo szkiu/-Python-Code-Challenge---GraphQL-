@@ -3,26 +3,38 @@ from fastapi.responses import JSONResponse
 from ariadne.asgi import GraphQL
 from app.graphql.schema import schema
 from app.services.auth import verify_token, auth_router
+from fastapi.openapi.utils import get_openapi
 
-# Create an instance of the GraphQL app
+
 graphql_app = GraphQL(schema, debug=True)
 
-# Initialize FastAPI
 app = FastAPI()
 
-# Include any existing routers for authentication or other purposes
+
+@app.get("/graphql-info", tags=["GraphQL Info"])
+async def graphql_info():
+    return {
+        "message": "This is a dummy endpoint to provide information about how to use the GraphQL endpoint.",
+        "instructions": "To interact with the GraphQL API, use the /graphql endpoint with POST requests containing a valid GraphQL query.",
+    }
+
+
 app.include_router(auth_router)
 
 
-# Middleware to verify token only for /graphql route
 @app.middleware("http")
-async def graphql_auth_middleware(request: Request, call_next):
-    if request.url.path == "/graphql":
+async def auth_middleware(request: Request, call_next):
+    if request.url.path not in [
+        "/docs",
+        "/redoc",
+        "/token",
+        "/openapi.json",
+        "/graphql-info",
+    ]:
         try:
             token = request.headers.get("Authorization")
             if not token:
                 raise HTTPException(status_code=401, detail="Missing token")
-            # Assuming 'verify_token' accepts a token string and raises HTTPException if invalid
             await verify_token(token.split(" ")[1])
         except HTTPException as http_exc:
             return JSONResponse(
@@ -35,10 +47,24 @@ async def graphql_auth_middleware(request: Request, call_next):
     return response
 
 
-# Mount GraphQL ASGI app directly to handle HTTP and WebSocket
 app.mount("/graphql", graphql_app)
 
-# Run the application
+
+def custom_openapi():
+    if app.openapi_schema:
+        return app.openapi_schema
+    openapi_schema = get_openapi(
+        title="Python Code Challenge - GraphQL",
+        version="1.0.0",
+        description="Docs for the Python Code Challenge - GraphQL",
+        routes=app.routes,
+    )
+    app.openapi_schema = openapi_schema
+    return app.openapi_schema
+
+
+app.openapi = custom_openapi
+
 if __name__ == "__main__":
     import uvicorn
 

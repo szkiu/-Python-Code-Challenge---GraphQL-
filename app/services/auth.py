@@ -35,7 +35,7 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
         )
 
 
-@auth_router.post("/token", response_model=Token)
+@auth_router.post("/token", response_model=Token, tags=["Auth Service"])
 async def token(client_id: str = Form(...), client_secret: str = Form(...)):
     if clients.get(client_id) != client_secret:
         raise HTTPException(
