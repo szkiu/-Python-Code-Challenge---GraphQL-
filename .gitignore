@@ -15,8 +15,9 @@ venv/
 *.dockerignore
 Dockerfile
 
-# CSV data
-data/*.csv
+# Ignore CSV files but keep the 'data' folder
+data/*
+!data/.gitkeep
 
 # Python egg
 *.egg-info/
