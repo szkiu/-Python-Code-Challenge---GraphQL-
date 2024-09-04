@@ -1,9 +1,16 @@
 import pandas as pd
 
 
-def load_csv_data(file_path: str = "./data/Data_example.csv"):
-    """Carga el archivo CSV y devuelve un DataFrame de pandas."""
+def load_csv_data():
     try:
-        return pd.read_csv(file_path)
-    except FileNotFoundError:
-        raise Exception(f"Archivo no encontrado en la ruta especificada: {file_path}")
+        df = pd.read_csv("/app/data/Data_example.csv")
+
+        df.replace("", pd.NA, inplace=True)
+        df.fillna("Unknown", inplace=True)
+
+        data = df.to_dict(orient="records")
+
+        return data
+    except Exception as e:
+        print(f"Error loading CSV data: {e}")
+        return []

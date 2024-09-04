@@ -26,14 +26,12 @@ cd graphql-api
 ### Construir la Imagen de Docker
 
 ```bash
-Copiar código
 docker build -t graphql-api .
 ```
 
 ### Ejecutar el Contenedor Docker
 
 ```bash
-Copiar código
 docker run -p 8080:8000 graphql-api
 ```
 
@@ -46,7 +44,6 @@ Esto expondrá la API en http://localhost:8080.
 Puedes acceder a la documentación Swagger para interactuar con los endpoints en:
 
 ```bash
-Copiar código
 http://localhost:8080/docs
 ```
 
@@ -65,10 +62,9 @@ http://localhost:8080/graphql
 Para obtener un token JWT, realiza una solicitud POST al endpoint /token con un client_id y client_secret válidos:
 
 ```bash
-curl -X POST "http://localhost:8080/token" \
--H "Content-Type: application/json" \
--d '{"client_id": "test_client_id", "client_secret": "test_client_secret"}'
-"
+curl -X POST "http://localhost:8080/token"
+-H "Content-Type: application/x-www-form-urlencoded"
+-d "client_id=test_client_id&client_secret=test_client_secret"
 ```
 
 #### Usar el Token JWT:
@@ -78,7 +74,10 @@ Utiliza el token JWT recibido para acceder a los endpoints protegidos de la API,
 Ejemplo de uso con curl:
 
 ```bash
-curl -X POST "http://localhost:8080/graphql" -H "Authorization: Bearer <your_token>" -d '{"query": "{ getData { column1 column2 } }"}'
+curl -L -X POST http://localhost:8080/graphql
+-H "Content-Type: application/json"
+-H "Authorization: Bearer <your-bearer-token>"
+-d '{"query": "{ getData { desc_ga_sku_producto, desc_ga_marca_producto } }"}'
 ```
 
 Reemplaza <your_token> con el token JWT obtenido del paso anterior.
@@ -93,7 +92,7 @@ El proyecto utiliza las siguientes dependencias:
 - `pandas==1.5.3`
 - `PyJWT==2.8.0`
 - `numpy==1.23.5`
-- `python-multipart==0.0.`
+- `python-multipart==0.0.9`
 
 Asegúrate de que estas dependencias estén correctamente instaladas en el contenedor Docker.
 

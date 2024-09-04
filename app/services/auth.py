@@ -6,7 +6,7 @@ import jwt
 SECRET_KEY = "your_secret_key"
 
 auth_router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/token")
 
 clients = {"test_client_id": "test_client_secret"}
 
@@ -16,7 +16,7 @@ class Token(BaseModel):
     token_type: str
 
 
-def verify_token(token: str = Depends(oauth2_scheme)):
+async def verify_token(token: str = Depends(oauth2_scheme)):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=["HS256"])
         user_id: str = payload.get("sub")

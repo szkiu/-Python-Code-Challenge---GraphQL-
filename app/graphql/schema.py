@@ -8,9 +8,8 @@ type_defs = gql(
     }
 
     type Data {
-        column1: String
-        column2: String
-        # Agregar más campos según las columnas del CSV
+        desc_ga_sku_producto: String
+        desc_ga_marca_producto: String
     }
 """
 )
