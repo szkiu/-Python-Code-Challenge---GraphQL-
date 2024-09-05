@@ -69,9 +69,7 @@ http://localhost:8080/graphql
 Para obtener un token JWT, realiza una solicitud POST al endpoint /token con un client_id y client_secret válidos:
 
 ```bash
-curl -X POST "http://localhost:8080/token"
--H "Content-Type: application/x-www-form-urlencoded"
--d "client_id=test_client_id&client_secret=test_client_secret"
+curl -X POST "http://localhost:8080/token" -H "Content-Type: application/x-www-form-urlencoded" -d "client_id=test_client_id&client_secret=test_client_secret"
 ```
 
 #### Usar el Token JWT:
@@ -81,10 +79,7 @@ Utiliza el token JWT recibido para acceder a los endpoints protegidos de la API,
 Ejemplo de uso con curl:
 
 ```bash
-curl -L -X POST http://localhost:8080/graphql
--H "Content-Type: application/json"
--H "Authorization: Bearer <your-bearer-token>"
--d '{"query": "{ getData { desc_ga_sku_producto, desc_ga_marca_producto } }"}'
+curl -L -X POST http://localhost:8080/graphql -H "Content-Type: application/json" -H "Authorization: Bearer <your-bearer-token>" -d '{"query": "{ getData { desc_ga_sku_producto, desc_ga_marca_producto } }"}'
 ```
 
 Reemplaza <your_token> con el token JWT obtenido del paso anterior.
