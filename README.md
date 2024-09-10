@@ -79,7 +79,12 @@ Utiliza el token JWT recibido para acceder a los endpoints protegidos de la API,
 Ejemplo de uso con curl:
 
 ```bash
-curl -L -X POST http://localhost:8080/graphql -H "Content-Type: application/json" -H "Authorization: Bearer <your-bearer-token>" -d '{"query": "{ getData { desc_ga_sku_producto, desc_ga_marca_producto } }"}'
+curl -L -X POST http://localhost:8080/graphql \
+-H "Content-Type: application/json" \
+-H "Authorization: Bearer <your_token>" \
+-d '{
+  "query": "query { getData { id_tie_fecha_valor id_cli_cliente id_ga_vista id_ga_tipo_dispositivo id_ga_fuente_medio desc_ga_sku_producto desc_ga_categoria_producto fc_agregado_carrito_cant fc_ingreso_producto_monto fc_retirado_carrito_cant fc_detalle_producto_cant fc_producto_cant desc_ga_nombre_producto fc_visualizaciones_pag_cant flag_pipol SASASA id_ga_producto desc_ga_nombre_producto_1 desc_ga_sku_producto_1 desc_ga_marca_producto desc_ga_cod_producto desc_categoria_producto desc_categoria_prod_principal }}"
+}'
 ```
 
 Reemplaza <your_token> con el token JWT obtenido del paso anterior.

@@ -29,7 +29,6 @@ async def verify_token(token: str = Depends(oauth2_scheme)):
                 detail="Invalid token",
                 headers={"WWW-Authenticate": "Bearer"},
             )
-        # Check token expiration
         exp = payload.get("exp")
         if exp is None or datetime.fromtimestamp(exp, tz=timezone.utc) < datetime.now(
             timezone.utc
